@@ -1,3 +1,10 @@
+<?php
+
+    if(empty($_COOKIE['type'])  or $_COOKIE['type']!='admin' ){
+    header('location: ../index.php');}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 

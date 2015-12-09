@@ -1,3 +1,10 @@
+<?php
+     if(empty($_COOKIE['type'])  or $_COOKIE['type']!='mahasiswa' ){
+    header('location: ../index.php');}
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
