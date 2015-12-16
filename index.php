@@ -5,9 +5,9 @@
 
 		if (!empty($_COOKIE['type'])) {
 		if ($_COOKIE['type']=='admin') {
-			header('location:admin\dashboard.php');
+			header('location:admin/dashboard.php');
 		} elseif ($_COOKIE['type']=='Admin') {
-			header('location:mahasiswa\dashboard.php');
+			header('location:mahasiswa/dashboard.php');
 		}{
 			
 		}
@@ -19,9 +19,9 @@
 	if(!(is_null($rs[0]['type']))){
 		setcookie("type", $rs[0]['type'], time()+3600,'/');
 		if ($rs[0]['type']=='admin') {
-			header('location:admin\dashboard.php');
+			header('location:admin/dashboard.php');
 		} else {
-			header('location:mahasiswa\dashboard.php');
+			header('location:mahasiswa/dashboard.php');
 		}
 		
 		
