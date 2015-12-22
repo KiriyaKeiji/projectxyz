@@ -18,6 +18,7 @@
 	$rs = $usr->login($_POST['usr'], $_POST['pwd']);
 	if(!(is_null($rs[0]['type']))){
 		setcookie("type", $rs[0]['type'], time()+3600,'/');
+        setcookie("id", $rs[0]['id'], time()+3600,'/');
 		if ($rs[0]['type']=='admin') {
 			header('location:admin/dashboard.php');
 		} else {
