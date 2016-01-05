@@ -3,8 +3,8 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 09, 2015 at 05:42 AM
--- Server version: 10.1.8-MariaDB
+-- Generation Time: 30 Des 2015 pada 18.43
+-- Versi Server: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `administrator`
+-- Struktur dari tabel `administrator`
 --
 
 CREATE TABLE `administrator` (
@@ -35,16 +35,17 @@ CREATE TABLE `administrator` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `administrator`
+-- Dumping data untuk tabel `administrator`
 --
 
 INSERT INTO `administrator` (`user_Admin`, `nama_Admin`, `pswd_Admin`, `departemen_Admin`, `Departemen_id_Departemen`) VALUES
-('admin', 'Admin', 'admin', '', 1);
+('admin', 'Admin', 'admin', '', 1),
+('josi', 'Josi Aranda', 'admin', '', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `departemen`
+-- Struktur dari tabel `departemen`
 --
 
 CREATE TABLE `departemen` (
@@ -53,17 +54,17 @@ CREATE TABLE `departemen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `departemen`
+-- Dumping data untuk tabel `departemen`
 --
 
 INSERT INTO `departemen` (`id_Departemen`, `nama_Departemen`) VALUES
-(0, 'Admin'),
-(1, 'Admin');
+(0, 'IC'),
+(1, 'BAAK');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `departemen_has_pelaporan`
+-- Struktur dari tabel `departemen_has_pelaporan`
 --
 
 CREATE TABLE `departemen_has_pelaporan` (
@@ -71,10 +72,20 @@ CREATE TABLE `departemen_has_pelaporan` (
   `Pelaporan_id_Pelaporan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data untuk tabel `departemen_has_pelaporan`
+--
+
+INSERT INTO `departemen_has_pelaporan` (`Departemen_id_Departemen`, `Pelaporan_id_Pelaporan`) VALUES
+(0, 5),
+(0, 6),
+(1, 5),
+(1, 8);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kategorilapor`
+-- Struktur dari tabel `kategorilapor`
 --
 
 CREATE TABLE `kategorilapor` (
@@ -82,10 +93,19 @@ CREATE TABLE `kategorilapor` (
   `nama_KategoriLapor` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data untuk tabel `kategorilapor`
+--
+
+INSERT INTO `kategorilapor` (`id_KategoriLapor`, `nama_KategoriLapor`) VALUES
+(1, 'Komplain'),
+(2, 'Saran'),
+(3, 'Kritik');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mahasiswa`
+-- Struktur dari tabel `mahasiswa`
 --
 
 CREATE TABLE `mahasiswa` (
@@ -95,7 +115,7 @@ CREATE TABLE `mahasiswa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `mahasiswa`
+-- Dumping data untuk tabel `mahasiswa`
 --
 
 INSERT INTO `mahasiswa` (`NIM`, `nama_Mahasiswa`, `pswd_Mahasiswa`) VALUES
@@ -104,30 +124,47 @@ INSERT INTO `mahasiswa` (`NIM`, `nama_Mahasiswa`, `pswd_Mahasiswa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pelaporan`
+-- Struktur dari tabel `pelaporan`
 --
 
 CREATE TABLE `pelaporan` (
   `id_Pelaporan` int(11) NOT NULL,
   `isi_Pelaporan` text NOT NULL,
-  `tgl_Pelaporan` date NOT NULL,
+  `tgl_Pelaporan` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ImagePath` varchar(100) DEFAULT NULL,
   `Mahasiswa_NIM` int(11) NOT NULL,
   `KategoriLapor_id_KategoriLapor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data untuk tabel `pelaporan`
+--
+
+INSERT INTO `pelaporan` (`id_Pelaporan`, `isi_Pelaporan`, `tgl_Pelaporan`, `ImagePath`, `Mahasiswa_NIM`, `KategoriLapor_id_KategoriLapor`) VALUES
+(5, 'rusak nih', '2015-12-22 23:48:31', 'Image/default.jpg', 1, 1),
+(6, 'wifi tidak jalan', '2015-12-30 23:38:30', 'Image/default.jpg', 1, 1),
+(8, 'ban saya rusak', '2015-12-31 00:08:42', 'Image/20151230180842Hellaflush-05.jpg', 1, 1);
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tanggapan`
+-- Struktur dari tabel `tanggapan`
 --
 
 CREATE TABLE `tanggapan` (
   `id_Tanggapan` int(11) NOT NULL,
   `isi_Tanggapan` text NOT NULL,
-  `tgl_Tanggapan` date NOT NULL,
+  `tgl_Tanggapan` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Administrator_user_Admin` varchar(25) NOT NULL,
   `Pelaporan_id_Pelaporan` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data untuk tabel `tanggapan`
+--
+
+INSERT INTO `tanggapan` (`id_Tanggapan`, `isi_Tanggapan`, `tgl_Tanggapan`, `Administrator_user_Admin`, `Pelaporan_id_Pelaporan`) VALUES
+(3, 'oke mas, kami segera selesaikan', '2015-12-31 00:17:16', 'admin', 8);
 
 --
 -- Indexes for dumped tables
@@ -183,35 +220,53 @@ ALTER TABLE `tanggapan`
   ADD KEY `fk_Tanggapan_Pelaporan1_idx` (`Pelaporan_id_Pelaporan`);
 
 --
--- Constraints for dumped tables
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- Constraints for table `administrator`
+-- AUTO_INCREMENT for table `kategorilapor`
+--
+ALTER TABLE `kategorilapor`
+  MODIFY `id_KategoriLapor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `pelaporan`
+--
+ALTER TABLE `pelaporan`
+  MODIFY `id_Pelaporan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT for table `tanggapan`
+--
+ALTER TABLE `tanggapan`
+  MODIFY `id_Tanggapan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `administrator`
 --
 ALTER TABLE `administrator`
   ADD CONSTRAINT `fk_Administrator_Departemen1` FOREIGN KEY (`Departemen_id_Departemen`) REFERENCES `departemen` (`id_Departemen`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `departemen_has_pelaporan`
+-- Ketidakleluasaan untuk tabel `departemen_has_pelaporan`
 --
 ALTER TABLE `departemen_has_pelaporan`
-  ADD CONSTRAINT `fk_Departemen_has_Pelaporan_Departemen1` FOREIGN KEY (`Departemen_id_Departemen`) REFERENCES `departemen` (`id_Departemen`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Departemen_has_Pelaporan_Pelaporan1` FOREIGN KEY (`Pelaporan_id_Pelaporan`) REFERENCES `pelaporan` (`id_Pelaporan`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_Departemen_has_Pelaporan_Departemen1` FOREIGN KEY (`Departemen_id_Departemen`) REFERENCES `departemen` (`id_Departemen`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `id_pelaporan` FOREIGN KEY (`Pelaporan_id_Pelaporan`) REFERENCES `pelaporan` (`id_Pelaporan`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `pelaporan`
+-- Ketidakleluasaan untuk tabel `pelaporan`
 --
 ALTER TABLE `pelaporan`
-  ADD CONSTRAINT `fk_Pelaporan_KategoriLapor1` FOREIGN KEY (`KategoriLapor_id_KategoriLapor`) REFERENCES `kategorilapor` (`id_KategoriLapor`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Pelaporan_Mahasiswa` FOREIGN KEY (`Mahasiswa_NIM`) REFERENCES `mahasiswa` (`NIM`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_Pelaporan_Mahasiswa` FOREIGN KEY (`Mahasiswa_NIM`) REFERENCES `mahasiswa` (`NIM`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `kategori` FOREIGN KEY (`KategoriLapor_id_KategoriLapor`) REFERENCES `kategorilapor` (`id_KategoriLapor`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `tanggapan`
+-- Ketidakleluasaan untuk tabel `tanggapan`
 --
 ALTER TABLE `tanggapan`
-  ADD CONSTRAINT `fk_Tanggapan_Administrator1` FOREIGN KEY (`Administrator_user_Admin`) REFERENCES `administrator` (`user_Admin`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_Tanggapan_Pelaporan1` FOREIGN KEY (`Pelaporan_id_Pelaporan`) REFERENCES `pelaporan` (`id_Pelaporan`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_Tanggapan_Administrator1` FOREIGN KEY (`Administrator_user_Admin`) REFERENCES `administrator` (`user_Admin`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
